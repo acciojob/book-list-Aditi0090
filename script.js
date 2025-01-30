@@ -1,32 +1,35 @@
-document.getElementById("submit").addEventListener("click", function(event) {
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+    const bookForm = document.getElementById("book-form");
+    const bookList = document.getElementById("book-list");
 
-    let title = document.getElementById("title").value.trim();
-    let author = document.getElementById("author").value.trim();
-    let isbn = document.getElementById("isbn").value.trim();
+    bookForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-    if (!title || !author || !isbn) {
-        alert("Please fill in all fields.");
-        return;
-    }
+        const title = document.getElementById("title").value;
+        const author = document.getElementById("author").value;
+        const isbn = document.getElementById("isbn").value;
 
-    let tableBody = document.getElementById("book-list");
-    let newRow = document.createElement("tr"); // Create row dynamically
+        if (!title || !author || !isbn) {
+            alert("Please fill in all fields");
+            return;
+        }
 
-    newRow.innerHTML = `
-        <td>${title}</td>
-        <td>${author}</td>
-        <td>${isbn}</td>
-        <td><button class="delete">Clear</button></td>
-    `;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${title}</td>
+            <td>${author}</td>
+            <td>${isbn}</td>
+            <td><button class="delete">Delete</button></td>
+        `;
 
-    tableBody.appendChild(newRow); 
-    document.getElementById("title").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("isbn").value = "";
+        bookList.appendChild(row);
 
-   
-    newRow.querySelector(".delete").addEventListener("click", function() {
-        newRow.remove();
+        bookForm.reset();
+    });
+
+    bookList.addEventListener("click", (e) => {
+        if (e.target.classList.contains("delete")) {
+            e.target.closest("tr").remove();
+        }
     });
 });
